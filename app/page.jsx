@@ -45,15 +45,16 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen  mx-auto bg-amber-300 ">
-      <div className="w-2xs p-4">
+    <div className="max-w-screen-xl flex mx-auto p-4 min-h-screen gap-3">
+      <div className="w-2s p-4 bg-yellow-100 rounded-2xl shadow-2xl">
+        <h1 className="text-center textl-xl">Products</h1>
         {items.map((item, index) => (
           <ProductItem key={index} {...item} onDragStart={handleDragStart} />
         ))}
       </div>
 
       <div
-        className="flex-1 border relative"
+        className="flex-1 rounded-2xl shadow-2xl bg-amber-500 relative"
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >

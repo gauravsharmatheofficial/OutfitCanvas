@@ -18,7 +18,7 @@ const OutfitCanvas = forwardRef(({ droppedItems, setDroppedItems }, ref) => {
   };
 
   return (
-    <Stage width={800} height={600} ref={ref} className="bg-red-50">
+    <Stage width={1200} height={600} ref={ref} className="bg-red-900">
       <Layer>
         {droppedItems.map((item, index) => (
           <DraggableResizableImage
