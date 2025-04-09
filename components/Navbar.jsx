@@ -20,7 +20,7 @@ function Navbar() {
           aria-expanded="false"
         >
           <span className="sr-only">Open main menu</span>
-          <svg
+          {/* <svg
             className="w-5 h-5"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ function Navbar() {
               stroke-width="2"
               d="M1 1h15M1 7h15M1 13h15"
             />
-          </svg>
+          </svg> */}
         </button>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white ">

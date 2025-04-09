@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --color-outfit-gray-border: #e9e9e9;
+  --color-outfit-gray-bg: #fafafa;
+  --color-outfit-gray-img: #efeeef;
+  --color-outfit-gray-button: #f9f9fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+/* @layer utilities {
+  .section_container {
+    @apply px-6 py-10 max-w-7xl  mx-auto bg-green-300;
+  }
+} */

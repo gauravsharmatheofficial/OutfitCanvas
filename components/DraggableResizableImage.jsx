@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { Image as KonvaImage, Transformer } from "react-konva";
+import { Image as KonvaImage, Transformer, Text } from "react-konva";
 
 export default function DraggableResizableImage({
   image,
@@ -10,6 +10,7 @@ export default function DraggableResizableImage({
   isSelected,
   onSelect,
   onChange,
+  onDelete,
   width,
   height,
 }) {
@@ -47,22 +48,37 @@ export default function DraggableResizableImage({
             x: node.x(),
             y: node.y(),
             image,
+            src: image.src,
             width: node.width() * scaleX,
             height: node.height() * scaleY,
           });
         }}
       />
+
       {isSelected && (
-        <Transformer
-          ref={trRef}
-          boundBoxFunc={(oldBox, newBox) => {
-            const aspectRatio = oldBox.width / oldBox.height;
-            return {
-              ...newBox,
-              height: newBox.width / aspectRatio,
-            };
-          }}
-        />
+        <>
+          <Transformer
+            ref={trRef}
+            boundBoxFunc={(oldBox, newBox) => {
+              const aspectRatio = oldBox.width / oldBox.height;
+              return {
+                ...newBox,
+                height: newBox.width / aspectRatio,
+              };
+            }}
+          />
+          {/* Delete Button */}
+          <Text
+            text="🗑️"
+            x={x + width - 15}
+            y={y - 20}
+            fontSize={18}
+            onClick={onDelete}
+            onTap={onDelete}
+            fill="red"
+            style={{ cursor: "pointer" }}
+          />
+        </>
       )}
     </>
   );
