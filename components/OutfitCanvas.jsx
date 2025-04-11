@@ -35,8 +35,8 @@ const OutfitCanvas = forwardRef(
 
     return (
       <Stage
-        width={1100}
-        height={750}
+        width={700}
+        height={350}
         ref={ref}
         className="border-2 border-outfit-gray-border rounded-2xl border-dashed w-full h-full"
         onMouseDown={handleStageClick}

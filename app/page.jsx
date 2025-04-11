@@ -9,6 +9,7 @@ import { FaRegSave } from "react-icons/fa";
 import { RiResetLeftFill } from "react-icons/ri";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -160,16 +161,15 @@ export default function Home() {
 
   return (
     <div className="bg-outfit-gray-bg py-3 ">
-      <div className="max-w-7xl mx-auto flex h-[90vh] border-outfit-gray-border border-2 rounded-md bg-white">
+      <div className="max-w-7xl mx-auto flex h-[85vh] border-outfit-gray-border border-2 rounded-md bg-white">
         {/* Products */}
-        <div className="p-5 gap-5 flex flex-col border-r-2 border-outfit-gray-border overflow-y-hidden hover:overflow-y-scroll ">
+        <div className="p-5 grid grid-cols-2 gap-3">
           {items.map((item) => (
-            <div
-              className="p-5 bg-outfit-gray-img items-center justify-center flex rounded-md  w-[100px] h-[100px]"
+            <ProductItem
+              {...item}
+              onDragStart={handleDragStart}
               key={item.id}
-            >
-              <ProductItem {...item} onDragStart={handleDragStart} />
-            </div>
+            />
           ))}
         </div>
 
@@ -219,14 +219,10 @@ export default function Home() {
               selectedId={selectedId}
               setSelectedId={setSelectedId}
             />
-
-            {/* Cart */}
-            <CartSidebar
-              cartItems={cartItems}
-              updateCartItem={updateCartItem}
-            />
           </div>
         </div>
+
+        <CartSidebar cartItems={cartItems} updateCartItem={updateCartItem} />
       </div>
     </div>
   );
