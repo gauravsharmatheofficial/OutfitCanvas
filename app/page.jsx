@@ -13,13 +13,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCart } from "@/context/CartContext";
 
 import { items } from "@/lib/getProducts";
+import { BsToggle2On } from "react-icons/bs";
 
 export default function Home() {
   const [droppedItems, setDroppedItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const stageRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
-  const { showCart } = useCart();
+  const { showCart, toggleCart } = useCart();
 
   useEffect(() => {
     console.log("cartItems", cartItems);
@@ -172,12 +173,12 @@ export default function Home() {
 
   return (
     <div className="bg-outfit-gray-bg py-3 relative">
-      <div className="max-w-7xl mx-auto flex h-[90vh] border-outfit-gray-border border-2 rounded-md bg-white justify-between">
+      <div className="max-w-7xl mx-auto flex h-[85vh] border-2 border-outfit-gray-border rounded-md bg-white">
         {/* Products */}
-        <div className="p-5 border-r-2 pr-1">
+        <div className="p-5 border-r-2 pr-1 overflow-hidden ">
           <h1 className="text-center text-xl text-bold mb-2">Products</h1>
-          <ScrollArea className="w-2xs h-[98%] pr-5 ">
-            <div className="grid grid-cols-2 gap-3 pb-4">
+          <ScrollArea className="w-2xs h-full pr-5 pb-5">
+            <div className="grid lg:grid-cols-2 gap-3 pb-4">
               {items.map((item) => (
                 <ProductItem
                   {...item}
@@ -189,7 +190,7 @@ export default function Home() {
           </ScrollArea>
         </div>
 
-        <div className="p-5">
+        <div className="p-5 flex flex-col justify-center items-center ">
           <div className="pb-5 gap-5 flex justify-center">
             <button
               onClick={handleClearCanvas}
@@ -199,13 +200,13 @@ export default function Home() {
               <RiResetLeftFill />
               Reset Canvas
             </button>
-            <button
+            {/* <button
               onClick={handleClearCanvas}
               className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
             >
               <FaRegSave />
               Save Canvas
-            </button>
+            </button> */}
             <button
               onClick={handleAddToCart}
               className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
@@ -213,12 +214,12 @@ export default function Home() {
               <PiShoppingCartSimpleBold />
               Add to Cart
             </button>
-            <button
+            {/* <button
               onClick={handleDelete}
               className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
             >
               <RiDeleteBinLine />
-            </button>
+            </button> */}
           </div>
 
           {/* Canvas */}
@@ -238,11 +239,12 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="absolute right-0 top-0  bg-[rgba(0,0,0,0.1)] h-full w-full">
-        {showCart && (
+
+      {showCart && (
+        <div className="absolute right-0 top-0 flex justify-end bg-[rgba(0,0,0,0.1)] h-full w-full">
           <CartSidebar cartItems={cartItems} updateCartItem={updateCartItem} />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

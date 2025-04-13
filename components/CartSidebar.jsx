@@ -2,11 +2,21 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { ScrollArea } from "./ui/scroll-area";
 import { FiMinus } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
+import { useCart } from "@/context/CartContext";
+import { MdOutlineCancelPresentation } from "react-icons/md";
 
 export default function CartSidebar({ cartItems, updateCartItem }) {
+  const { toggleCart } = useCart();
+
   return (
-    <div className="w-2xs p-4 pr-1 bg-white border-l-2">
-      <h2 className="text-lg font-bold mb-4">Cart</h2>
+    <div className="w-xs p-4 pr-1 bg-white border-l-2">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-bold">Cart</h2>
+        <MdOutlineCancelPresentation
+          className="text-2xl mr-4 cursor-pointer hover:text-red-300"
+          onClick={toggleCart}
+        />
+      </div>
       <ScrollArea className="h-[96%] pr-4">
         {cartItems.length === 0 ? (
           <p className="text-sm text-gray-500">No items in cart</p>

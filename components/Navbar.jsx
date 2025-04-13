@@ -2,6 +2,7 @@
 
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
+import { PiShoppingCartSimpleBold } from "react-icons/pi";
 
 function Navbar() {
   const { toggleCart } = useCart();
@@ -17,12 +18,11 @@ function Navbar() {
             alt="Torrins Logo"
           />
         </a>
-        <button
+
+        <PiShoppingCartSimpleBold
           onClick={toggleCart}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Toggle Cart
-        </button>
+          className="text-xl cursor-pointer"
+        />
       </div>
     </nav>
   );

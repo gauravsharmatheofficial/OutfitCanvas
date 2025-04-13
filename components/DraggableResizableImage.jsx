@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Image as KonvaImage, Transformer, Text } from "react-konva";
 
 export default function DraggableResizableImage({
@@ -16,7 +16,31 @@ export default function DraggableResizableImage({
 }) {
   const shapeRef = useRef(null);
   const trRef = useRef(null);
+  const [scaledWidth, setScaledWidth] = useState(width);
+  const FIXED_HEIGHT = 150;
 
+  // Maintain aspect ratio on image load
+  useEffect(() => {
+    if (image && image.width && image.height) {
+      const ratio = image.width / image.height;
+      const newWidth = FIXED_HEIGHT * ratio;
+      setScaledWidth(newWidth);
+
+      // Notify parent of the dimension change if not already set
+      if (!width || !height) {
+        onChange({
+          x,
+          y,
+          image,
+          src: image.src,
+          width: newWidth,
+          height: FIXED_HEIGHT,
+        });
+      }
+    }
+  }, [image]);
+
+  // Handle transformer selection
   useEffect(() => {
     if (isSelected && trRef.current) {
       trRef.current.nodes([shapeRef.current]);
@@ -34,8 +58,8 @@ export default function DraggableResizableImage({
         draggable
         onClick={onSelect}
         onTap={onSelect}
-        width={width}
-        height={height}
+        width={scaledWidth}
+        height={FIXED_HEIGHT}
         onTransformEnd={(e) => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();
@@ -70,7 +94,7 @@ export default function DraggableResizableImage({
           {/* Delete Button */}
           <Text
             text="🗑️"
-            x={x + width - 15}
+            x={x + scaledWidth - 15}
             y={y - 20}
             fontSize={18}
             onClick={onDelete}
