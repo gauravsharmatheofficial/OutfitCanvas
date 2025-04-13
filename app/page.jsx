@@ -10,28 +10,20 @@ import { RiResetLeftFill } from "react-icons/ri";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useCart } from "@/context/CartContext";
+
+import { items } from "@/lib/getProducts";
 
 export default function Home() {
-  const [items, setItems] = useState([]);
   const [droppedItems, setDroppedItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const stageRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
+  const { showCart } = useCart();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const products = await getProducts();
-      const mapped = products.map((product) => ({
-        src: product.image,
-        type: product.category,
-        title: product.title,
-        price: product.price,
-        id: product.id,
-      }));
-      setItems(mapped);
-    };
-    fetchItems();
-  }, []);
+    console.log("cartItems", cartItems);
+  }, [cartItems]);
 
   useEffect(() => {
     const savedCanvas = localStorage.getItem("droppedItems");
@@ -66,15 +58,19 @@ export default function Home() {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const handleDragStart = (e, type, src) => {
+  const handleDragStart = (e, type, src, title, price) => {
     e.dataTransfer.setData("type", type);
     e.dataTransfer.setData("src", src);
+    e.dataTransfer.setData("title", title);
+    e.dataTransfer.setData("price", price);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const src = e.dataTransfer.getData("src");
     const type = e.dataTransfer.getData("type");
+    const title = e.dataTransfer.getData("title");
+    const price = e.dataTransfer.getData("price");
 
     const stage = stageRef.current;
     const rect = stage.container().getBoundingClientRect();
@@ -91,6 +87,8 @@ export default function Home() {
         width: img.width * 0.5,
         height: img.height * 0.5,
         type,
+        title,
+        price,
         src,
         addedToCart: false,
       };
@@ -103,27 +101,40 @@ export default function Home() {
     if (notAddedItems.length === 0) return;
 
     const newItemsMap = {};
-    notAddedItems.forEach(({ src, type }) => {
+    notAddedItems.forEach(({ src }) => {
+      const product = items.find((item) => item.src === src);
+      if (!product) return;
+
       if (newItemsMap[src]) {
         newItemsMap[src].count += 1;
       } else {
-        newItemsMap[src] = { src, type, count: 1 };
+        newItemsMap[src] = {
+          src: product.src,
+          type: product.type,
+          title: product.title,
+          price: product.price,
+          count: 1,
+        };
       }
     });
 
+    console.log("notAddedItems", notAddedItems);
+
     setCartItems((prev) => {
       const updated = [...prev];
-      Object.values(newItemsMap).forEach(({ src, type, count }) => {
-        const existingIndex = updated.findIndex((item) => item.src === src);
-        if (existingIndex !== -1) {
-          updated[existingIndex] = {
-            ...updated[existingIndex],
-            count: updated[existingIndex].count + count,
-          };
-        } else {
-          updated.push({ src, type, count });
+      Object.values(newItemsMap).forEach(
+        ({ src, type, count, title, price }) => {
+          const existingIndex = updated.findIndex((item) => item.src === src);
+          if (existingIndex !== -1) {
+            updated[existingIndex] = {
+              ...updated[existingIndex],
+              count: updated[existingIndex].count + count,
+            };
+          } else {
+            updated.push({ src, type, count, title, price });
+          }
         }
-      });
+      );
       return updated;
     });
 
@@ -160,17 +171,22 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-outfit-gray-bg py-3 ">
-      <div className="max-w-7xl mx-auto flex h-[85vh] border-outfit-gray-border border-2 rounded-md bg-white">
+    <div className="bg-outfit-gray-bg py-3 relative">
+      <div className="max-w-7xl mx-auto flex h-[90vh] border-outfit-gray-border border-2 rounded-md bg-white justify-between">
         {/* Products */}
-        <div className="p-5 grid grid-cols-2 gap-3">
-          {items.map((item) => (
-            <ProductItem
-              {...item}
-              onDragStart={handleDragStart}
-              key={item.id}
-            />
-          ))}
+        <div className="p-5 border-r-2 pr-1">
+          <h1 className="text-center text-xl text-bold mb-2">Products</h1>
+          <ScrollArea className="w-2xs h-[98%] pr-5 ">
+            <div className="grid grid-cols-2 gap-3 pb-4">
+              {items.map((item) => (
+                <ProductItem
+                  {...item}
+                  onDragStart={handleDragStart}
+                  key={item.id}
+                />
+              ))}
+            </div>
+          </ScrollArea>
         </div>
 
         <div className="p-5">
@@ -221,8 +237,11 @@ export default function Home() {
             />
           </div>
         </div>
-
-        <CartSidebar cartItems={cartItems} updateCartItem={updateCartItem} />
+      </div>
+      <div className="absolute right-0 top-0  bg-[rgba(0,0,0,0.1)] h-full w-full">
+        {showCart && (
+          <CartSidebar cartItems={cartItems} updateCartItem={updateCartItem} />
+        )}
       </div>
     </div>
   );

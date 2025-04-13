@@ -35,7 +35,7 @@ const OutfitCanvas = forwardRef(
 
     return (
       <Stage
-        width={700}
+        width={500}
         height={350}
         ref={ref}
         className="border-2 border-outfit-gray-border rounded-2xl border-dashed w-full h-full"
