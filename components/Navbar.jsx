@@ -9,7 +9,7 @@ function Navbar() {
 
   return (
     <nav className="bg-white border-b-2 border-gray-200">
-      <div className="max-w-screen-xl flex justify-between items-center mx-auto p-2">
+      <div className="flex justify-between items-center mx-auto py-2 px-3">
         <a href="/">
           <Image
             src="/torrins logo.png"

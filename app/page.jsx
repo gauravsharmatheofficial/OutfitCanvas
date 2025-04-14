@@ -4,12 +4,13 @@ import { useState, useRef, useEffect } from "react";
 import ProductItem from "@/components/ProductItem";
 import OutfitCanvas from "@/components/OutfitCanvas";
 import CartSidebar from "@/components/CartSidebar";
+import Demostage from "@/components/Demostage";
 import { getProducts } from "@/lib/getProducts";
 import { FaRegSave } from "react-icons/fa";
 import { RiResetLeftFill } from "react-icons/ri";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useCart } from "@/context/CartContext";
 
 import { items } from "@/lib/getProducts";
@@ -172,13 +173,13 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-outfit-gray-bg py-3 relative">
-      <div className="max-w-7xl mx-auto flex h-[85vh] border-2 border-outfit-gray-border rounded-md bg-white">
-        {/* Products */}
-        <div className="p-5 border-r-2 pr-1 overflow-hidden ">
-          <h1 className="text-center text-xl text-bold mb-2">Products</h1>
-          <ScrollArea className="w-2xs h-full pr-5 pb-5">
-            <div className="grid lg:grid-cols-2 gap-3 pb-4">
+    <>
+      <div className="bg-outfit-gray-bg p-3 relative h-full">
+        <div className="mx-auto flex lg:flex-row flex-col lg:h-[85vh] border-2 border-outfit-gray-border rounded-md bg-white">
+          {/* Products */}
+          <div className="p-5 border-r-2 border-outfit-gray-border pr-2 overflow-hidden">
+            <h1 className="text-center text-xl text-bold mb-2">Products</h1>
+            <div className="flex lg:grid lg:grid-cols-2 overflow-auto lg:gap-5 gap-3 h-full pr-3 lg:pb-8 pb-3">
               {items.map((item) => (
                 <ProductItem
                   {...item}
@@ -187,64 +188,68 @@ export default function Home() {
                 />
               ))}
             </div>
-          </ScrollArea>
-        </div>
+          </div>
 
-        <div className="p-5 flex flex-col justify-center items-center ">
-          <div className="pb-5 gap-5 flex justify-center">
-            <button
-              onClick={handleClearCanvas}
-              className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 
+          <div className="p-5 flex flex-col justify-center items-center ">
+            <div className="pb-5 gap-5 flex justify-center">
+              <button
+                onClick={handleClearCanvas}
+                className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 
               hover:cursor-pointer"
-            >
-              <RiResetLeftFill />
-              Reset Canvas
-            </button>
-            {/* <button
+              >
+                <RiResetLeftFill />
+                Reset Canvas
+              </button>
+              {/* <button
               onClick={handleClearCanvas}
               className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
             >
               <FaRegSave />
               Save Canvas
             </button> */}
-            <button
-              onClick={handleAddToCart}
-              className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
-            >
-              <PiShoppingCartSimpleBold />
-              Add to Cart
-            </button>
-            {/* <button
+              <button
+                onClick={handleAddToCart}
+                className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
+              >
+                <PiShoppingCartSimpleBold />
+                Add to Cart
+              </button>
+              {/* <button
               onClick={handleDelete}
               className="flex gap-1.5 items-center bg-outfit-gray-button border-[1px] border-outfit-gray-border shadow-md hover:bg-outfit-gray-border transition rounded-md px-5 py-1.5 hover:cursor-pointer"
             >
               <RiDeleteBinLine />
             </button> */}
-          </div>
+            </div>
 
-          {/* Canvas */}
-          <div
-            className=""
-            onDrop={handleDrop}
-            onDragOver={(e) => e.preventDefault()}
-          >
-            <OutfitCanvas
-              droppedItems={droppedItems}
-              setDroppedItems={setDroppedItems}
-              handleDelete={handleDelete}
-              ref={stageRef}
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
+            {/* Canvas */}
+            <div
+              className=""
+              onDrop={handleDrop}
+              onDragOver={(e) => e.preventDefault()}
+            >
+              <OutfitCanvas
+                droppedItems={droppedItems}
+                setDroppedItems={setDroppedItems}
+                handleDelete={handleDelete}
+                ref={stageRef}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+              />
+            </div>
+          </div>
+        </div>
+
+        {showCart && (
+          <div className="absolute right-0 top-0 flex justify-end bg-[rgba(0,0,0,0.1)] h-full w-full">
+            <CartSidebar
+              cartItems={cartItems}
+              updateCartItem={updateCartItem}
             />
           </div>
-        </div>
+        )}
       </div>
-
-      {showCart && (
-        <div className="absolute right-0 top-0 flex justify-end bg-[rgba(0,0,0,0.1)] h-full w-full">
-          <CartSidebar cartItems={cartItems} updateCartItem={updateCartItem} />
-        </div>
-      )}
-    </div>
+      <Demostage />
+    </>
   );
 }
