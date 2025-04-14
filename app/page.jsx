@@ -5,16 +5,12 @@ import ProductItem from "@/components/ProductItem";
 import OutfitCanvas from "@/components/OutfitCanvas";
 import CartSidebar from "@/components/CartSidebar";
 import Demostage from "@/components/Demostage";
-import { getProducts } from "@/lib/getProducts";
-import { FaRegSave } from "react-icons/fa";
 import { RiResetLeftFill } from "react-icons/ri";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
 import { useCart } from "@/context/CartContext";
 
 import { items } from "@/lib/getProducts";
-import { BsToggle2On } from "react-icons/bs";
 
 export default function Home() {
   const [droppedItems, setDroppedItems] = useState([]);
