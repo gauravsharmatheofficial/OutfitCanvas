@@ -34,8 +34,8 @@ const OutfitCanvas = forwardRef(
     };
 
     const [dimensions, setDimensions] = useState({
-      width: window.innerWidth - 400,
-      height: window.innerHeight - 300,
+      width: 400,
+      height: 300,
     });
 
     useEffect(() => {
